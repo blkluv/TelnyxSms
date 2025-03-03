@@ -39,7 +39,7 @@ const SMSForm: React.FC<SMSFormProps> = ({ onMessageSent }) => {
         <Phone className="mr-2 text-blue-500" size={20} />
         Send SMS
       </h2>
-      
+
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="to" className="block text-sm font-medium text-gray-700 mb-1">
@@ -55,7 +55,7 @@ const SMSForm: React.FC<SMSFormProps> = ({ onMessageSent }) => {
             required
           />
         </div>
-        
+
         <div className="mb-4">
           <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
             Message
@@ -70,19 +70,19 @@ const SMSForm: React.FC<SMSFormProps> = ({ onMessageSent }) => {
             required
           />
         </div>
-        
+
         {error && (
           <div className="mb-4 p-2 bg-red-100 text-red-700 rounded-md">
             {error}
           </div>
         )}
-        
+
         {success && (
           <div className="mb-4 p-2 bg-green-100 text-green-700 rounded-md">
             {success}
           </div>
         )}
-        
+
         <button
           type="submit"
           disabled={sending}

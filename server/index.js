@@ -33,17 +33,17 @@ app.use(express.static(join(__dirname, '../dist')));
 app.post('/api/send-sms', async (req, res) => {
   try {
     const { to, message } = req.body;
-    
+
     if (!to || !message) {
       return res.status(400).json({ error: 'To phone number and message are required' });
     }
-    
+
     const result = await telnyxClient.messages.create({
       from: process.env.TELNYX_PHONE_NUMBER,
       to,
       text: message,
     });
-    
+
     smsMessages.push({
       id: result.data.id,
       direction: 'outbound',
@@ -52,7 +52,7 @@ app.post('/api/send-sms', async (req, res) => {
       text: message,
       timestamp: new Date().toISOString(),
     });
-    
+
     res.json({ success: true, messageId: result.data.id });
   } catch (error) {
     console.error('Error sending SMS:', error);
@@ -67,18 +67,18 @@ app.get('/api/sms-messages', (req, res) => {
 app.post('/api/initiate-call', async (req, res) => {
   try {
     const { to } = req.body;
-    
+
     if (!to) {
       return res.status(400).json({ error: 'To phone number is required' });
     }
-    
+
     const call = await telnyxClient.calls.create({
       connection_id: 'your_connection_id', // Replace with your Telnyx connection ID
       to,
       from: process.env.TELNYX_PHONE_NUMBER,
       audio_url: 'https://example.com/greeting.wav', // Replace with your audio file URL
     });
-    
+
     callLogs.push({
       id: call.data.call_control_id,
       direction: 'outbound',
@@ -87,7 +87,7 @@ app.post('/api/initiate-call', async (req, res) => {
       status: 'initiated',
       timestamp: new Date().toISOString(),
     });
-    
+
     res.json({ success: true, callId: call.data.call_control_id });
   } catch (error) {
     console.error('Error initiating call:', error);
@@ -137,7 +137,7 @@ app.post('/webhook', (req, res) => {
         timestamp: new Date().toISOString(),
       });
       break;
-      
+
     case 'call.initiated':
     case 'call.answered':
     case 'call.hangup':
@@ -145,7 +145,7 @@ app.post('/webhook', (req, res) => {
       // Handle call events
       const callData = event.data.payload;
       const existingCallIndex = callLogs.findIndex(call => call.id === callData.call_control_id);
-      
+
       if (existingCallIndex >= 0) {
         callLogs[existingCallIndex].status = event.data.event_type.split('.')[1];
         callLogs[existingCallIndex].updated_at = new Date().toISOString();
@@ -161,7 +161,7 @@ app.post('/webhook', (req, res) => {
         });
       }
       break;
-      
+
     default:
       console.log('Unhandled event type:', event.data.event_type);
   }
