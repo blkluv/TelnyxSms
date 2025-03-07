@@ -10,6 +10,6 @@ export default defineConfig({
   // Define environment variables to be exposed to the client
   define: {
     // Expose environment variables with the VITE_ prefix
-    'import.meta.env.VITE_APP_DOMAIN': JSON.stringify(process.env.VITE_APP_DOMAIN || 'http://localhost:3000'),
+    'import.meta.env.VITE_APP_DOMAIN': JSON.stringify(process.env.VITE_APP_DOMAIN || 'https://telnyx-sms.vercel.app'),
   },
 });
